@@ -36,9 +36,9 @@ Route::prefix('admin')->middleware(['auth', admin::class])->group(function () {
         return view('admin.index');
     })->name('Admindashboard');
 
-    Route::get('/uploads', function () {
-        return view('admin.upload');
-    })->name('uploadss');
+    Route::get('/admin.patients', function () {
+        return view('admin.patients');
+    })->name('admin.patients');
 
 
 
@@ -58,6 +58,7 @@ Route::prefix('doctor')->middleware(['auth', doctor::class])->group(function () 
     Route::get('/appointment', function () {
         return view('user.appointment');
     })->name('appointment');
+
 
 
     // Route::post('/logout', function () {

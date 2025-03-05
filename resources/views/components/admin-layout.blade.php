@@ -24,13 +24,13 @@
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-     {{-- @wireUiScripts --}}
+     @wireUiScripts
     @livewireStyles
 </head>
 
 <body class="font-sans antialiased relative bg-green-800">
-    {{-- <x-notifications position="top-right" />
-    <x-dialog z-index="z-50" blur="md" align="center" /> --}}
+  <x-notifications position="top-right" />
+    <x-dialog z-index="z-50" blur="md" align="center" />
     <button data-drawer-target="sidebar-multi-level-sidebar" data-drawer-toggle="sidebar-multi-level-sidebar"
         aria-controls="sidebar-multi-level-sidebar" type="button"
         class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
@@ -83,7 +83,7 @@
                 </li>
 
                 <li>
-                    <a href=""
+                    <a href="{{route('admin.patients')}}"
                         class="flex items-center p-2 text-white hover:text-black rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <i class="ri-team-fill text-green-700"></i>
                         <span class="ms-3">Patients</span>
