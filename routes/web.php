@@ -25,7 +25,7 @@ Route::middleware(['auth'])->group(function () {
             return redirect()->route('Doctordashboard');
         }
         else {
-            return redirect()->route('Userdashboard');
+            return redirect()->route('Midwifedashboard');
         }
     })->name('dashboard');
 });
@@ -39,6 +39,10 @@ Route::prefix('admin')->middleware(['auth', admin::class])->group(function () {
     Route::get('/admin.patients', function () {
         return view('admin.patients');
     })->name('admin.patients');
+
+    Route::get('/admin.staffs', function () {
+        return view('admin.staffs');
+    })->name('admin.staffs');
 
 
 

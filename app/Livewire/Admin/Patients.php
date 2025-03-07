@@ -140,6 +140,11 @@ class Patients extends Component
         $this->showModal = false;
     }
 
+    public function closeModal1(){
+
+        $this->viewAllModal = false;
+    }
+
 
 
 

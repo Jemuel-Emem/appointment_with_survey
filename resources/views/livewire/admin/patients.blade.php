@@ -293,7 +293,7 @@
                 </div>
 
                 <div class="mt-6 flex justify-end">
-                    <button wire:click="closeModal" class="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700">
+                    <button wire:click="closeModal1" class="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700">
                         Close
                     </button>
                 </div>
