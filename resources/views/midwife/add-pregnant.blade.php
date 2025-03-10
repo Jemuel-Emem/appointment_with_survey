@@ -2,7 +2,7 @@
     <div>
 
         <div class="  ">
-            <livewire:midwife.index/>
+            <livewire:midwife.add-pregnant/>
         </div>
 
     </div>

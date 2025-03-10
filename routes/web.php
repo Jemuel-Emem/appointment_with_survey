@@ -77,6 +77,10 @@ Route::prefix('midwife')->middleware(['auth', midwife::class])->group(function (
         return view('midwife.index');
     })->name('Midwifedashboard');
 
+    Route::get('/midwife.add-pregnant', function () {
+        return view('midwife.add-pregnant');
+    })->name('midwife.add-pregnant');
+
 
     // Route::post('/logout', function () {
     //     Auth::logout();

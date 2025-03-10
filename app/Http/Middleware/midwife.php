@@ -19,7 +19,7 @@ class midwife
             return $next($request);
         }
 
-        return redirect('Userdashboard');
+        return redirect('Midwifedashboard');
     }
     }
 
