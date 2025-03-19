@@ -81,6 +81,11 @@ Route::prefix('midwife')->middleware(['auth', midwife::class])->group(function (
         return view('midwife.add-pregnant');
     })->name('midwife.add-pregnant');
 
+    Route::get('/midwife.newborn', function () {
+        return view('midwife.newborn');
+    })->name('midwife.newborn');
+
+
     Route::get('/midwifepregnants-tracker', function () {
         return view('midwife.pregnants-tracker');
     })->name('midwifepregnats-tracker');
