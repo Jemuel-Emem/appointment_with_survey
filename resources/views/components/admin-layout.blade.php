@@ -91,20 +91,20 @@
                 </li>
 
                 <li>
-                    <a href=""
+                    <a href="{{route('admin.resident')}}"
                         class="flex items-center p-2 text-white hover:text-black rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <i class="ri-team-fill text-green-700"></i>
                         <span class="ms-3">Residents</span>
                     </a>
                 </li>
 
-                <li>
+                {{-- <li>
                     <a href=""
                         class="flex items-center p-2 text-white hover:text-black rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <i class="ri-team-fill text-green-700"></i>
                         <span class="ms-3">Childbirth Records</span>
                     </a>
-                </li>
+                </li> --}}
 
 
 
@@ -112,7 +112,7 @@
 
 
                 <li>
-                    <a href=""
+                    <a href="{{route('admin.survey')}}"
                         class="flex items-center p-2 text-white hover:text-black rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <i class="ri-survey-fill text-green-700"></i>
                         <span class="ms-3">Create Survey</span>

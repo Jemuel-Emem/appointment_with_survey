@@ -44,6 +44,15 @@ Route::prefix('admin')->middleware(['auth', admin::class])->group(function () {
         return view('admin.staffs');
     })->name('admin.staffs');
 
+    Route::get('/admin.survey', function () {
+        return view('admin.survey');
+    })->name('admin.survey');
+
+    Route::get('/admin.resident', function () {
+        return view('admin.resident');
+    })->name('admin.resident');
+
+
 
 
     // Route::post('/logout', function () {

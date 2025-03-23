@@ -8,24 +8,35 @@
 
     <!-- Modal -->
     @if($showModal)
-        <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-            <div class="bg-white p-6 rounded-lg w-3/4 max-h-[90vh] overflow-y-auto">
+    <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+        <div class="bg-white p-6 rounded-lg w-3/4 max-h-[90vh] overflow-y-auto" wire:key="{{ now() }}">
                 <h2 class="text-lg font-bold mb-4">Add Patient</h2>
 
                 <form wire:submit.prevent="save">
-                    <div class="grid grid-cols-3 gap-4">
+                    <div class="grid grid-cols-3 gap-4 flex">
                         <!-- Household ID -->
-                        <div class="col-span-3">
-                            <label class="block text-sm font-medium">Household ID #</label>
-                            <input type="text" wire:model="household_id" class="w-full border rounded p-2">
-                            @error('household_id') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        <div class="col-span-3  ">
+                           <div>
+                            <div>
+                                <label class="block text-sm font-medium">Household ID #</label>
+                                <input type="text" wire:model="household_id" wire:change="fetchResidentData" class="w-full border rounded p-2">
+                                @error('household_id') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                            </div>
+
+
+                           </div>
+
+                           <div class="flex justify-end">
+                            <button class="text-blue-500 bg-blue-500 text-white w-64 mt-4 p-1 hover:bg-blue-600">Show Data</button>
+                           </div>
+
                         </div>
 
                         <!-- Personal Information -->
                         <div class="col-span-3 font-bold text-lg">Personal Information</div>
                         <div>
                             <label class="block text-sm font-medium">Full Name</label>
-                            <input type="text" wire:model="full_name" class="w-full border rounded p-2">
+                            <input type="text" wire:model="full_name" class="w-full border rounded p-2" valu>
                             @error('full_name') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                         </div>
                         <div>

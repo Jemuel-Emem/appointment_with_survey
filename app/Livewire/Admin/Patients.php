@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Livewire\Admin;
-
+use App\Models\Resident;
 use Livewire\Component;
 use App\Models\patients as Patient; // Ensure you import the correct Patient model
 use Illuminate\Validation\Rule;
@@ -31,6 +31,10 @@ class Patients extends Component
     public $category = [];
 
     public $editingPatientId = null;
+
+    public $residentData = null;
+
+
 
     public function editPatient($id)
     {
@@ -71,8 +75,41 @@ class Patients extends Component
 
         // Open edit modal
         $this->showModal = true;
+
+
     }
 
+    public function fetchResidentData()
+{
+    $resident = Resident::where('household_id', $this->household_id)->first();
+
+    if ($resident) {
+        $this->full_name = $resident->full_name;
+        $this->date_of_birth = $resident->date_of_birth;
+        $this->age = $resident->age;
+        $this->gender = $resident->gender;
+        $this->civil_status = $resident->civil_status;
+        $this->contact_number = $resident->contact_number;
+        $this->email = $resident->email;
+        $this->home_address = $resident->home_address;
+        $this->purok_zone = $resident->purok_zone;
+        $this->years_of_residency = $resident->years_of_residency;
+        $this->emergency_name = $resident->emergency_contact_name;
+        $this->emergency_relationship = $resident->emergency_contact_relationship;
+        $this->emergency_contact_number = $resident->emergency_contact_number;
+        $this->emergency_alt_contact_number = $resident->emergency_alt_contact_number;
+
+        // ✅ Set modal to open
+        $this->showModal = true;
+
+    } else {
+        $this->reset([
+            'full_name', 'date_of_birth', 'age', 'gender', 'civil_status',
+            'contact_number', 'email', 'home_address', 'purok_zone', 'years_of_residency',
+            'emergency_name', 'emergency_relationship', 'emergency_contact_number', 'emergency_alt_contact_number'
+        ]);
+    }
+}
 
     public function render()
     {
@@ -188,6 +225,8 @@ class Patients extends Component
     // }
     public function save()
     {
+
+
         $this->validate();
 
         if ($this->editingPatientId) {
@@ -226,6 +265,8 @@ class Patients extends Component
 
             flash()->success('Patient updated successfully!');
         } else {
+
+
             // Create new patient
             Patient::create([
                 'household_id' => $this->household_id,
