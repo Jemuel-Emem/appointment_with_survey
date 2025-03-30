@@ -52,6 +52,10 @@ Route::prefix('admin')->middleware(['auth', admin::class])->group(function () {
         return view('admin.resident');
     })->name('admin.resident');
 
+    Route::get('/admin.appointments', function () {
+        return view('admin.appointments');
+    })->name('admin.appointments');
+
 
 
 
@@ -69,8 +73,8 @@ Route::prefix('doctor')->middleware(['auth', doctor::class])->group(function () 
     })->name('Doctordashboard');
 
     Route::get('/appointment', function () {
-        return view('user.appointment');
-    })->name('appointment');
+        return view('doctor.appointment');
+    })->name('doctor.appointment');
 
 
 

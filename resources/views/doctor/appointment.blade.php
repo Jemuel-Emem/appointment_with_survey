@@ -2,7 +2,7 @@
     <div>
 
         <div class="  ">
-            <livewire:doctor.index/>
+            <livewire:doctor.appointment/>
         </div>
 
     </div>
