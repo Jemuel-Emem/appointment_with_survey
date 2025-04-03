@@ -7,18 +7,18 @@
                     const month = now.getMonth();
                     const year = now.getFullYear();
 
-                    // Get first day of month and total days
+
                     const firstDay = new Date(year, month, 1).getDay();
                     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-                    // Month names
+
                     const monthNames = ["January", "February", "March", "April", "May", "June",
                                        "July", "August", "September", "October", "November", "December"];
 
-                    // Day names
+
                     const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-                    // Create calendar HTML with larger size and title
+
                     let calendarHTML = `
                         <div style="font-family: Arial, sans-serif; width: 100%; max-width: 2000px; margin: 0 auto; border: 1px solid #ddd; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
                             <!-- Calendar Title -->

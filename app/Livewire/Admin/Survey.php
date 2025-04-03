@@ -1,15 +1,16 @@
 <?php
 
 namespace App\Livewire\Admin;
+
 use App\Models\Resident;
 use App\Models\Survey as SurveyModel;
 use Livewire\Component;
+use Illuminate\Support\Facades\Log;
 
 class Survey extends Component
 {
     public $showModal = false;
     public $survey_id, $title, $description, $form_link;
-
 
     public function openModal()
     {
@@ -30,26 +31,6 @@ class Survey extends Component
         $this->form_link = '';
     }
 
-    // public function save()
-    // {
-    //     $this->validate([
-    //         'title' => 'required|string|max:255',
-    //         'description' => 'nullable|string',
-    //         'form_link' => 'required|url',
-    //     ]);
-
-    //     SurveyModel::updateOrCreate(
-    //         ['id' => $this->survey_id],
-    //         [
-    //             'title' => $this->title,
-    //             'description' => $this->description,
-    //             'form_link' => $this->form_link,
-    //         ]
-    //     );
-
-    //     $this->closeModal();
-    // }
-
     public function save()
     {
         $this->validate([
@@ -67,34 +48,35 @@ class Survey extends Component
             ]
         );
 
-        $this->sendSurveySMS($survey);
+
+        $this->sendSurveyToResidents($survey);
 
         $this->closeModal();
+        session()->flash('message', 'Survey saved successfully!');
     }
 
-    private function sendSurveySMS($survey)
+    private function sendSurveyToResidents($survey)
     {
-        $residents = Resident::whereNotNull('contact_number')->pluck('contact_number');
+        $residents = Resident::whereNotNull('contact_number')->get();
 
-        foreach ($residents as $phoneNumber) {
-            $this->sendSMS($phoneNumber, $survey->title, $survey->description, $survey->form_link);
+        foreach ($residents as $resident) {
+            $this->sendSMS(
+                $resident->contact_number,
+                "New Survey Available: {$survey->title}. Click here to participate: "
+            );
         }
     }
 
-    private function sendSMS($phoneNumber, $title, $description, $form_link)
+    private function sendSMS($phoneNumber, $message)
     {
         $ch = curl_init();
 
-        $message = "New Survey: {$title}\n";
-        $message .= $description ? "Details: {$description}\n" : "";
-        $message .= "Participate here: {$form_link}";
-
-        $parameters = [
+        $parameters = array(
             'apikey' => '046125f45f4f187e838905df98273c4e',
             'number' => $phoneNumber,
             'message' => $message,
             'sendername' => 'KaisFrozen'
-        ];
+        );
 
         curl_setopt($ch, CURLOPT_URL, 'https://semaphore.co/api/v4/messages');
         curl_setopt($ch, CURLOPT_POST, 1);
@@ -102,12 +84,12 @@ class Survey extends Component
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         $output = curl_exec($ch);
-        $error = curl_error($ch);
         curl_close($ch);
 
 
-    }
 
+
+    }
 
     public function edit($id)
     {
@@ -123,6 +105,7 @@ class Survey extends Component
     public function delete($id)
     {
         SurveyModel::findOrFail($id)->delete();
+        session()->flash('message', 'Survey deleted successfully!');
     }
 
     public function render()
