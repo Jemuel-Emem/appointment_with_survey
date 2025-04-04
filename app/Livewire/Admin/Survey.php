@@ -36,7 +36,7 @@ class Survey extends Component
         $this->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'form_link' => 'required|url',
+
         ]);
 
         $survey = SurveyModel::updateOrCreate(
@@ -62,7 +62,7 @@ class Survey extends Component
         foreach ($residents as $resident) {
             $this->sendSMS(
                 $resident->contact_number,
-                "New Survey Available: {$survey->title}. Click here to participate: "
+                "New Survey Available: {$survey->title}. Click here to participate: {$survey->form_link}"
             );
         }
     }

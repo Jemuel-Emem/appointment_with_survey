@@ -7,7 +7,7 @@
                     const month = now.getMonth();
                     const year = now.getFullYear();
 
-
+       
                     const firstDay = new Date(year, month, 1).getDay();
                     const daysInMonth = new Date(year, month + 1, 0).getDate();
 

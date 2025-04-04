@@ -32,7 +32,7 @@
 
                         </div>
 
-                        <!-- Personal Information -->
+                      
                         <div class="col-span-3 font-bold text-lg">Personal Information</div>
                         <div>
                             <label class="block text-sm font-medium">Full Name</label>

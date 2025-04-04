@@ -26,7 +26,7 @@ public $trackerRecords = [];
 
         if ($type === 'tracker' && $pregnantId) {
             $this->selectedPregnantId = $pregnantId;
-            $this->pregnant_id = $pregnantId; // Ensure this is set
+            $this->pregnant_id = $pregnantId; 
             $this->trackerRecords = PregnantTracker::where('pregnant_id', $pregnantId)->get();
         }
     }
