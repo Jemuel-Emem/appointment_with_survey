@@ -1,10 +1,10 @@
 <div>
-  <div class="flex justify-end">
+  {{-- <div class="flex justify-end">
       <!-- Button to open modal -->
       <button wire:click="$set('showModal', true)" class="px-4 py-2 bg-blue-500 text-white rounded w-64">
         Add Patient
     </button>
-  </div>
+  </div> --}}
 
     <!-- Modal -->
     @if($showModal)
@@ -32,7 +32,7 @@
 
                         </div>
 
-                      
+
                         <div class="col-span-3 font-bold text-lg">Personal Information</div>
                         <div>
                             <label class="block text-sm font-medium">Full Name</label>
@@ -237,8 +237,8 @@
                             <td class="border px-4 py-2 text-center">{{ $patient->gender }}</td>
                             <td class="border px-4 py-2 text-center">
                                 <button wire:click="showPatient({{ $patient->id }})" class="px-2 py-1 bg-blue-500 text-white rounded">Show Details</button>
-                                <button wire:click="editPatient({{ $patient->id }})" class="px-2 py-1 bg-yellow-500 text-white rounded">Edit</button>
-                                <button wire:click="deletePatient({{ $patient->id }})" class="px-2 py-1 bg-red-500 text-white rounded">Delete</button>
+                                {{-- <button wire:click="editPatient({{ $patient->id }})" class="px-2 py-1 bg-yellow-500 text-white rounded">Edit</button>
+                                <button wire:click="deletePatient({{ $patient->id }})" class="px-2 py-1 bg-red-500 text-white rounded">Delete</button> --}}
 
                             </td>
                         </tr>
@@ -248,7 +248,7 @@
         </div>
 
         @if($viewAllModal && $selectedPatient)
-        <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+        <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 ml-8">
             <div class="bg-white p-6 rounded-lg w-3/4 max-h-[90vh] overflow-y-auto">
                 <h2 class="text-2xl font-bold mb-4 text-center">Patient Details</h2>
 

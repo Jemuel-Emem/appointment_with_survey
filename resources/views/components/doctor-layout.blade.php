@@ -75,6 +75,23 @@
                 </li>
 
 
+                <li>
+                    <a href="{{route('doctor.patients')}}"
+                        class="flex items-center p-2 text-white hover:text-black rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <i class="ri-file-paper-fill text-green-700"></i>
+                        <span class="ms-3">Patients</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('doctor.medical_record')}}"
+                        class="flex items-center p-2 text-white hover:text-black rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <i class="ri-file-paper-fill text-green-700"></i>
+                        <span class="ms-3">Medical Records</span>
+                    </a>
+                </li>
+
+
+
 
 
 
