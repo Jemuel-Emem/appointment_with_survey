@@ -28,10 +28,17 @@
                                 <button wire:click="edit({{ $record->id }}, 'pregnant')"
                                     class="px-2 py-1 bg-yellow-500 text-white rounded">Edit</button>
 
-                                <button wire:click="delete({{ $record->id }})" class="px-2 py-1 bg-red-500 text-white rounded" onclick="confirm('Are you sure?') || event.stopImmediatePropagation()">Delete</button>
+
                                 <button wire:click="openModal('tracker', {{ $record->id }})"
                                     class="px-2 py-1 bg-gray-500 text-white rounded">Tracker
                             </button>
+
+                            <button
+                            onclick="confirm('Are you sure you want to delete this?') || event.stopImmediatePropagation()"
+                            wire:click="delete({{ $record->id }})"
+                            class="px-2 py-1 bg-red-500 text-white rounded">
+                            Delete
+                        </button>
 
                             </td>
                         </tr>

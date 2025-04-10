@@ -29,7 +29,13 @@
                         </td>
                         <td class="border px-4 py-2 text-center">
                             <button wire:click="editStaff({{ $staff->id }})" class="px-2 py-1 bg-yellow-500 text-white rounded">Edit</button>
-                            <button wire:click="deleteStaff({{ $staff->id }})" class="px-2 py-1 bg-red-500 text-white rounded">Delete</button>
+                            <button
+                            onclick="confirm('Are you sure you want to delete this staff?') || event.stopImmediatePropagation()"
+                            wire:click="deleteStaff({{ $staff->id }})"
+                            class="px-2 py-1 bg-red-500 text-white rounded">
+                            Delete
+                        </button>
+
                         </td>
                     </tr>
                 @endforeach

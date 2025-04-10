@@ -4,6 +4,7 @@ namespace App\Livewire\Doctor;
 use App\Models\followup_appointments as FollowupAppointment;
 use App\Models\Appointment as AppModel;
 use App\Models\User;
+use Carbon\Carbon;
 use Livewire\Component;
 
 class Appointment extends Component
@@ -52,6 +53,35 @@ class Appointment extends Component
 
     public function save()
     {
+        // $this->validate([
+        //     'patientName' => 'required',
+        //     'date' => 'required|date',
+        //     'time' => 'required',
+        //     'doctorId' => 'required|exists:users,id',
+        // ]);
+
+        // if ($this->isEditing) {
+        //     $appointment = AppModel::find($this->appointmentId);
+        //     if ($appointment) {
+        //         $appointment->update([
+        //             'patient_name' => $this->patientName,
+        //             'appointment_date' => $this->date,
+        //             'appointment_time' => $this->time,
+        //             'doctor_id' => $this->doctorId,
+        //         ]);
+        //     }
+        // } else {
+        //     AppModel::create([
+        //         'patient_name' => $this->patientName,
+        //         'appointment_date' => $this->date,
+        //         'appointment_time' => $this->time,
+        //         'doctor_id' => $this->doctorId,
+        //     ]);
+        // }
+
+        // $this->resetForm();
+        // $this->closeModal();
+
         $this->validate([
             'patientName' => 'required',
             'date' => 'required|date',
@@ -59,6 +89,36 @@ class Appointment extends Component
             'doctorId' => 'required|exists:users,id',
         ]);
 
+        $appointmentDateTime = Carbon::parse($this->date . ' ' . $this->time);
+        $now = Carbon::now();
+
+        // Check if the appointment is in the past
+        if ($appointmentDateTime->lessThan($now)) {
+            $this->addError('time', 'Cannot book an appointment in the past.');
+            return;
+        }
+
+        // Check for overlapping appointments within 30 minutes
+        $conflict = AppModel::where('appointment_date', $this->date)
+            ->where('doctor_id', $this->doctorId)
+            ->where(function ($query) use ($appointmentDateTime) {
+                $query->whereBetween('appointment_time', [
+                    $appointmentDateTime->copy()->subMinutes(30)->format('H:i:s'),
+                    $appointmentDateTime->copy()->addMinutes(30)->format('H:i:s'),
+                ]);
+            });
+
+        // If editing, exclude the current appointment
+        if ($this->isEditing) {
+            $conflict->where('id', '!=', $this->appointmentId);
+        }
+
+        if ($conflict->exists()) {
+            $this->addError('time', 'This doctor already has an appointment within 30 minutes of the selected time.');
+            return;
+        }
+
+        // Save or update
         if ($this->isEditing) {
             $appointment = AppModel::find($this->appointmentId);
             if ($appointment) {

@@ -33,8 +33,15 @@
                     <td class="border px-4 py-2 text-center">{{ $newborn->length }}</td>
                     <td class="border px-4 py-2 text-center">
                         <button wire:click="editNewborn({{ $newborn->id }})" class="px-3 py-1 bg-yellow-500 text-white rounded">Edit</button>
-                        <button wire:click="confirmDelete({{ $newborn->id }})" class="px-3 py-1 bg-red-500 text-white rounded">Delete</button>
+
                         <button wire:click="openTracker({{ $newborn->id }})" class="px-3 py-1 bg-blue-500 text-white rounded">Tracker</button>
+                        <button
+                        onclick="confirm('Are you sure you want to delete this?') || event.stopImmediatePropagation()"
+                        wire:click="confirmDelete({{ $newborn->id }})"
+                        class="px-2 py-1 bg-red-500 text-white rounded">
+                        Delete
+                    </button>
+
                     </td>
                 </tr>
             @endforeach

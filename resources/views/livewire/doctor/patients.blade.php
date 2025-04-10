@@ -238,7 +238,14 @@
                               <td class="border px-4 py-2 text-center">
                                   <button wire:click="showPatient({{ $patient->id }})" class="px-2 py-1 bg-blue-500 text-white rounded">Show Details</button>
                                   <button wire:click="editPatient({{ $patient->id }})" class="px-2 py-1 bg-yellow-500 text-white rounded">Edit</button>
-                                  <button wire:click="deletePatient({{ $patient->id }})" class="px-2 py-1 bg-red-500 text-white rounded">Delete</button>
+                                  <button
+                                  onclick="confirm('Are you sure you want to delete this survey?') || event.stopImmediatePropagation()"
+                                  wire:click="deletePatient({{ $patient->id }})"
+                                  class="px-2 py-1 bg-red-500 text-white rounded">
+                                  Delete
+                              </button>
+
+
 
                               </td>
                           </tr>
@@ -248,8 +255,8 @@
           </div>
 
           @if($viewAllModal && $selectedPatient)
-          <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-              <div class="bg-white p-6 rounded-lg w-3/4 max-h-[90vh] overflow-y-auto">
+          <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 ml-10">
+              <div class="bg-white p-6 rounded-lg w-3/4 max-h-[90vh] overflow-y-auto" id="patientDetailsModal">
                   <h2 class="text-2xl font-bold mb-4 text-center">Patient Details</h2>
 
                   <div class="grid grid-cols-3 gap-6">
@@ -304,14 +311,45 @@
                   </div>
 
                   <div class="mt-6 flex justify-end">
-                      <button wire:click="closeModal1" class="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700">
-                          Close
-                      </button>
+                    <button wire:click="closeModal1" class="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 no-print">
+                        Close
+                    </button>
+                      <button onclick="printPatientDetails()" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 ml-2 w-32">
+                        Print
+                    </button>
                   </div>
               </div>
           </div>
+
+
       @endif
 
       </div>
+
+      <script>
+        function printPatientDetails() {
+            // Get the modal content
+            const printContent = document.getElementById('patientDetailsModal').innerHTML;
+
+            // Get the original page content
+            const originalContent = document.body.innerHTML;
+
+            // Replace the body content with the modal content
+            document.body.innerHTML = printContent;
+
+            // Add some print-specific styling
+            document.body.style.fontFamily = 'Arial, sans-serif';
+            document.body.style.padding = '20px';
+
+            // Print the window
+            window.print();
+
+            // Restore the original content
+            document.body.innerHTML = originalContent;
+
+            // Since we replaced the DOM, we need to tell Livewire to reinitialize
+            window.livewire.rescan();
+        }
+    </script>
 
   </div>

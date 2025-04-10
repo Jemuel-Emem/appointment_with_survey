@@ -26,8 +26,15 @@
                         <td class="border px-4 py-2 text-center">
                             <button wire:click="showResident({{ $resident->id }})" class="px-2 py-1 bg-blue-500 text-white rounded">Show Details</button>
                             <button wire:click="editResident({{ $resident->id }})" class="px-2 py-1 bg-yellow-500 text-white rounded">Edit</button>
-                            <button wire:click="deleteResident({{ $resident->id }})" class="px-2 py-1 bg-red-500 text-white rounded">Delete</button>
 
+
+
+                            <button
+                            onclick="confirm('Are you sure you want to delete this resident?') || event.stopImmediatePropagation()"
+                            wire:click=""deleteResident({{ $resident->id }})"
+                            class="px-2 py-1 bg-red-500 text-white rounded">
+                            Delete
+                        </button>
                         </td>
                     </tr>
                 @endforeach
