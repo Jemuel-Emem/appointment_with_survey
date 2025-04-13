@@ -2,12 +2,14 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\TrashBin;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 
 class Staffs extends Component
 {
+
     public $showModal = false;
     public $name, $email, $role, $password, $staffId;
     public $isEditing = false;
@@ -58,7 +60,7 @@ class Staffs extends Component
                 'password' => Hash::make($this->password),
             ]);
         }
-
+        flash()->success('Staff saved successfully!');
         $this->resetForm();
         $this->closeModal();
     }
@@ -76,7 +78,17 @@ class Staffs extends Component
 
     public function deleteStaff($id)
     {
-        User::findOrFail($id)->delete();
+        $user = User::findOrFail($id);
+
+        TrashBin::create([
+            'user_id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'role' => $user->is_admin == 2 ? 'doctor' : 'midwife',
+        ]);
+
+        $user->delete();
+        flash()->error('The staff was successfully deleted.');
     }
 
     public function render()

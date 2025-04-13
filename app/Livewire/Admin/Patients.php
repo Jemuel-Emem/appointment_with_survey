@@ -313,7 +313,7 @@ class Patients extends Component
     public function deletePatient($id)
     {
         Patient::find($id)->delete();
-        flash()->error('Patient delete successfully!');
+        flash()->error('Patient deleted successfully!');
         $this->patients = Patient::all(); // Refresh data
     }
 

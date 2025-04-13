@@ -56,8 +56,13 @@ Route::prefix('admin')->middleware(['auth', admin::class])->group(function () {
         return view('admin.appointments');
     })->name('admin.appointments');
 
+    Route::get('/admin.med_appointments', function () {
+        return view('admin.med_appointmentes');
+    })->name('admin.med_appointments');
 
-
+    Route::get('/admin.trashbin', function () {
+        return view('admin.trashbin');
+    })->name('admin.trashbin');
 
     // Route::post('/logout', function () {
     //     Auth::logout();
@@ -110,7 +115,9 @@ Route::prefix('midwife')->middleware(['auth', midwife::class])->group(function (
         return view('midwife.pregnants-tracker');
     })->name('midwifepregnats-tracker');
 
-
+    Route::get('/midwife.appointment', function () {
+        return view('midwife.appointment');
+    })->name('midwife.appointment');
     // Route::post('/logout', function () {
     //     Auth::logout();
     //     return redirect('/login');

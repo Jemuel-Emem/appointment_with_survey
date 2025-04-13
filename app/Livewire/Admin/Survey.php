@@ -52,7 +52,7 @@ class Survey extends Component
         $this->sendSurveyToResidents($survey);
 
         $this->closeModal();
-        session()->flash('message', 'Survey saved successfully!');
+        flash()->success('Survey saved successfully!');
     }
 
     private function sendSurveyToResidents($survey)
@@ -105,7 +105,7 @@ class Survey extends Component
     public function delete($id)
     {
         SurveyModel::findOrFail($id)->delete();
-        session()->flash('message', 'Survey deleted successfully!');
+        flash()->error('Staff deleted successfully!');
     }
 
     public function render()

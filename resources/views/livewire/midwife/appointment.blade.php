@@ -7,10 +7,10 @@
         <table class="min-w-full bg-white border">
             <thead>
                 <tr class="bg-gray-200">
-                    <th class="px-4 py-2 border">Patient</th>
+                    <th class="px-4 py-2 border">Pregnant Name</th>
                     <th class="px-4 py-2 border">Date</th>
                     <th class="px-4 py-2 border">Time</th>
-                    <th class="px-4 py-2 border">Doctor</th>
+
 
                     <th class="px-4 py-2 border">Actions</th>
                 </tr>
@@ -21,9 +21,7 @@
                         <td class="border px-4 py-2 text-center">{{ $appointment->patient_name }}</td>
                         <td class="border px-4 py-2 text-center">{{ $appointment->appointment_date }}</td>
                         <td class="border px-4 py-2 text-center">{{ $appointment->appointment_time }}</td>
-                        <td class="border px-4 py-2 text-center">
-                            {{ $appointment->doctor ? $appointment->doctor->name : 'N/A' }}
-                        </td>
+
 
                         <td class="border px-4 py-2 text-center">
                             <button wire:click="editAppointment({{ $appointment->id }})" class="px-2 py-1 bg-yellow-500 text-white rounded">Edit</button>
@@ -69,11 +67,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach(\App\Models\followup_appointments::where('appointment_id', $appointmentId)->get() as $followup)
-                        <tr>
-                            <td class="border px-4 py-2 text-center">{{ $followup->followup_date }}</td>
-                        </tr>
-                    @endforeach
+                    @foreach(\App\Models\Midwife_FollowAppointement::where('med_id', $appointmentId)->get() as $followup)
+
+
+                    <tr>
+                        <td class="border px-4 py-2 text-center">{{ $followup->followup_date }}</td>
+                    </tr>
+                @endforeach
                 </tbody>
             </table>
         </div>
@@ -87,13 +87,8 @@
             <h2 class="text-2xl font-bold mb-4">{{ $isEditing ? 'Edit' : 'Add' }} Appointment</h2>
             <form wire:submit.prevent="save">
                 <div>
-                    <label class="block font-semibold">Patient Name:</label>
+                    <label class="block font-semibold">Pregnant Name:</label>
                     <input type="text" wire:model="patientName" class="w-full border p-2 rounded">
-                </div>
-
-                <div>
-                    <label class="block font-semibold">Phone Number:</label>
-                    <input type="text" wire:model="phone_number" class="w-full border p-2 rounded">
                 </div>
 
                 <div class="mt-2">
@@ -106,15 +101,7 @@
                     <input type="time" wire:model="time" class="w-full border p-2 rounded">
                 </div>
 
-                <div class="mt-2">
-                    <label class="block font-semibold">Doctor:</label>
-                    <select wire:model="doctorId" class="w-full border p-2 rounded">
-                        <option value="">Select Doctor</option>
-                        @foreach($doctors as $doctor)
-                            <option value="{{ $doctor->id }}">{{ $doctor->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
+
 
                 <div class="mt-4 flex gap-2">
                     <button type="button" wire:click="closeModal" class="bg-gray-400 text-white px-4 py-2 rounded">Cancel</button>

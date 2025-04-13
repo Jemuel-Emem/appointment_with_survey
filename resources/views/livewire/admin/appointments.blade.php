@@ -1,4 +1,7 @@
 <div>
+   <div class="flex justify-end">
+    <a href="{{route('admin.med_appointments')}}" class="text-blue-500 "> <button>Midwife Appointments</button></a>
+   </div>
     <h2 class="text-2xl font-bold mb-4">Appointments</h2>
 
     <table class="min-w-full bg-white border">
