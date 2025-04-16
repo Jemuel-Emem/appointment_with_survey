@@ -52,9 +52,9 @@ new #[Layout('layouts.guest')] class extends Component
 
         <div class="flex items-center justify-end mt-4">
 
-            <span>
+            {{-- <span>
                 <a href="{{route('register')}}">Don't have an account?</a>
-            </span>
+            </span> --}}
 
             <x-primary-button class="ms-3">
                 {{ __('Log in') }}

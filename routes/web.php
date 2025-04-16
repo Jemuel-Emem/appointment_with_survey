@@ -64,6 +64,10 @@ Route::prefix('admin')->middleware(['auth', admin::class])->group(function () {
         return view('admin.trashbin');
     })->name('admin.trashbin');
 
+    Route::get('/admin.childrec', function () {
+        return view('admin.childrec');
+    })->name('admin.childrec');
+
     // Route::post('/logout', function () {
     //     Auth::logout();
     //     return redirect('/login');
