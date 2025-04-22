@@ -43,12 +43,11 @@
     </div>
     <!-- Modal -->
     @if($showModal)
-        <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+        <div class=" ml-32 fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
             <div class="bg-white p-6 rounded-lg w-3/4 max-h-[90vh] overflow-y-auto relative">
                 <button wire:click="closeModal" class="absolute top-2 right-2 px-3 py-1 bg-red-500 text-white rounded-full">
                     &times;
                 </button>
-                <h2 class="text-lg font-bold mb-4">Add Resident</h2>
 
                 <form wire:submit.prevent="save">
                     <div class="grid grid-cols-3 gap-4">
