@@ -76,7 +76,7 @@ class Newborn extends Component
             'vaccine_or_service_provided' => $this->vaccine_or_service_provided,
             'dose' => $this->dose,
             'schedule_next_visit' => $this->schedule_next_visit,
-            'remarks' => $this->remarks,
+            'remarks' => $this->remarks1,
         ]);
 
         session()->flash('message', 'Visit record added successfully.');
@@ -110,6 +110,7 @@ class Newborn extends Component
     }
     public function saveNewborn()
     {
+
         newBorns::create([
             'date_of_delivery' => $this->date_of_delivery,
             'time_of_delivery' => $this->time_of_delivery,
@@ -122,7 +123,7 @@ class Newborn extends Component
             'date_and_vaccine_given' => $this->date_and_vaccine_given,
             'place_of_delivery' => $this->place_of_delivery,
             'type_of_delivery' => $this->type_of_delivery,
-            'remarks' => $this->remarks,
+            'remarks' => $this->remarks1,
         ]);
 
         session()->flash('message', 'Newborn record added successfully!');

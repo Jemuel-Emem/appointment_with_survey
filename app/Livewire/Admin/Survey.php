@@ -62,7 +62,7 @@ class Survey extends Component
         foreach ($residents as $resident) {
             $this->sendSMS(
                 $resident->contact_number,
-                "New Survey Available: {$survey->title}. Click here to participate: {$survey->form_link}"
+                "New Survey Available: {$survey->title}. Click here to participate: {$survey->form_link} From: BMHC"
             );
         }
     }

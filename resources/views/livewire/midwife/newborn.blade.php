@@ -116,11 +116,13 @@
                     </div>
 
                     <!-- Remarks -->
-                    <div>
+                 <div>
                         <label class="block text-sm font-medium text-gray-700">Remarks</label>
                         <textarea wire:model="remarks" class="w-full border p-2 rounded"></textarea>
                         @error('remarks') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
+
+
                 </div>
 
                 <div class="mt-4 mb-4 flex justify-end space-x-2">
