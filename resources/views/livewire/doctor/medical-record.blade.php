@@ -4,47 +4,72 @@
             Add Medical Record
         </button>
     </div>
+
+    <div class="mb-4">
+        <input type="text" wire:model.debounce.500ms="search" placeholder="Search by name or diagnosis..."
+            class="w-full md:w-1/3 border rounded px-3 py-2" />
+
+            <button wire:click="sar" class="bg-green-500 text-white ml-4 h-10 w-64 hover:bg-green-600">Search</button>
+    </div>
     <div class="overflow-x-auto bg-white shadow rounded-lg p-4 mb-6">
         <h3 class="text-lg font-semibold mb-2">Medical Records</h3>
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-100">
                 <tr>
-                    <th class="px-4 py-2 text-left">Full Name</th>
-                    <th class="px-4 py-2 text-left">Diagnosis</th>
-                    <th class="px-4 py-2 text-left">Symptoms</th>
-                    <th class="px-4 py-2 text-left">Prescriptions</th>
-                    <th class="px-4 py-2 text-left">Date</th>
-
-                    <th class="px-4 py-2 text-left">Action</th>
-
+                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Full Name</th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Diagnosis</th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Symptoms</th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Prescriptions</th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Date</th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Actions</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
-                @forelse ($medicalRecords as $record)
-                    <tr>
-                        <td class="px-4 py-2">{{ $record->full_name }}</td>
-                        <td class="px-4 py-2">{{ $record->diagnosis }}</td>
-                        <td class="px-4 py-2">{{ $record->symptoms }}</td>
-                        <td class="px-4 py-2">{{ $record->prescriptions }}</td>
-                        <td class="px-4 py-2">{{ $record->created_at->format('M d, Y') }}</td>
-                        <td class="px-4 py-2">
-                            <button wire:click="viewRecord({{ $record->id }})" class="bg-blue-500 text-white px-3 py-1 rounded text-sm">
-                                Show More Details
+                @forelse ($records as $record)
+                <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-4 py-3 text-sm text-gray-700">{{ $record->full_name }}</td>
+                    <td class="px-4 py-3 text-sm text-gray-700 max-w-xs truncate">{{ $record->diagnosis }}</td>
+                    <td class="px-4 py-3 text-sm text-gray-700 max-w-xs truncate">{{ $record->symptoms }}</td>
+                    <td class="px-4 py-3 text-sm text-gray-700 max-w-xs truncate">{{ $record->prescriptions }}</td>
+                    <td class="px-4 py-3 text-sm text-gray-500">{{ $record->created_at->format('M d, Y') }}</td>
+                    <td class="px-4 py-3 text-sm">
+                        <div class="flex space-x-2">
+                            <button
+                                wire:click="viewRecord({{ $record->id }})"
+                                class="px-2 py-1 bg-gray-500 text-white rounded"
+                            >
+                                View
                             </button>
-                        </td>
-                    </tr>
+                            <button
+                                wire:click="editRecord({{ $record->id }})"
+                                class="px-2 py-1 bg-yellow-500 text-white rounded"
+                            >
+                                Edit
+                            </button>
+                        </div>
+                    </td>
+                </tr>
                 @empty
-                    <tr>
-                        <td colspan="5" class="px-4 py-2 text-center text-gray-500">No records found.</td>
-                    </tr>
+                <tr>
+                    <td colspan="6" class="px-4 py-6 text-center text-gray-500">
+                        No medical records found matching your criteria.
+                    </td>
+                </tr>
                 @endforelse
             </tbody>
         </table>
+
+        @if($records->hasPages())
+        <div class="mt-4">
+            {{ $records->links() }}
+        </div>
+        @endif
+
     </div>
 
     @if ($showViewModal && $selectedRecord)
     <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-        <div class="bg-white rounded-lg p-6 w-full max-w-2xl overflow-y-auto max-h-[90vh]">
+        <div class="bg-white rounded-lg p-6 w-full max-w-2xl overflow-y-auto max-h-[90vh]" id="printable-area" >
             <h2 class="text-xl font-bold mb-4">Medical Record Details</h2>
 
             <div class="grid grid-cols-2 gap-4">
@@ -67,6 +92,11 @@
                 <button wire:click="$set('showViewModal', false)" class="px-4 py-2 bg-gray-500 text-white rounded">
                     Close
                 </button>
+                <button onclick="printRecord()" class="px-4 py-2 bg-blue-600 text-white rounded">
+                    Print
+                </button>
+
+
             </div>
         </div>
     </div>
@@ -165,3 +195,14 @@
         </div>
     @endif
 </div>
+<script>
+    function printRecord() {
+        let printContents = document.getElementById('printable-area').innerHTML;
+        let originalContents = document.body.innerHTML;
+
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+        window.location.reload();
+    }
+</script>

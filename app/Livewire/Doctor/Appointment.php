@@ -54,87 +54,62 @@ class Appointment extends Component
         $this->reset(['appointmentId', 'patientName', 'date', 'time',  'doctorId']);
     }
 
-    // public function save()
-    // {
 
 
-    //     $this->validate([
-    //         'patientName' => 'required',
-    //         'phone_number' => 'required',
-    //         'date' => 'required|date',
-    //         'time' => 'required',
-    //         'doctorId' => 'required|exists:users,id',
-    //     ]);
+//     public function save()
+// {
+//     $this->validate([
+//         'patientName' => 'required',
+//         'phone_number' => 'required',
+//         'date' => 'required|date',
+//         'time' => 'required',
+//         'doctorId' => 'required|exists:users,id',
+//     ]);
 
-    //     $appointmentDateTime = Carbon::parse($this->date . ' ' . $this->time);
-    //     $now = Carbon::now();
+//     $appointmentDateTime = Carbon::parse($this->date . ' ' . $this->time);
+//     $now = Carbon::now();
 
-    //     // Check if the appointment is in the past
-    //     if ($appointmentDateTime->lessThan($now)) {
-    //         $this->addError('time', 'Cannot book an appointment in the past.');
-    //         return;
-    //     }
+//     // Prevent booking in the past
+//     if ($appointmentDateTime->lessThan($now)) {
+//         $this->addError('time', 'Cannot book an appointment in the past.');
+//         return;
+//     }
 
-    //     // Check for overlapping appointments within 30 minutes
-    //     $conflict = AppModel::where('appointment_date', $this->date)
-    //         ->where('doctor_id', $this->doctorId)
-    //         ->where(function ($query) use ($appointmentDateTime) {
-    //             $query->whereBetween('appointment_time', [
-    //                 $appointmentDateTime->copy()->subMinutes(30)->format('H:i:s'),
-    //                 $appointmentDateTime->copy()->addMinutes(30)->format('H:i:s'),
-    //             ]);
-    //         });
+//     // Save or update
+//     if ($this->isEditing) {
+//         $appointment = AppModel::find($this->appointmentId);
+//         if ($appointment) {
+//             $appointment->update([
+//                 'patient_name' => $this->patientName,
+//                 'phone_number' => $this->phone_number,
+//                 'appointment_date' => $this->date,
+//                 'appointment_time' => $this->time,
+//                 'doctor_id' => $this->doctorId,
+//             ]);
+//         }
+//     } else {
+//         $appointment = AppModel::create([
+//             'patient_name' => $this->patientName,
+//             'phone_number' => $this->phone_number,
+//             'appointment_date' => $this->date,
+//             'appointment_time' => $this->time,
+//             'doctor_id' => $this->doctorId,
+//         ]);
+//     }
 
-    //     // If editing, exclude the current appointment
-    //     if ($this->isEditing) {
-    //         $conflict->where('id', '!=', $this->appointmentId);
-    //     }
+//     $appointmentDateTime = Carbon::parse($appointment->appointment_date . ' ' . $appointment->appointment_time);
+//     $reminderTime = $appointmentDateTime->copy()->subDay();
 
-    //     if ($conflict->exists()) {
-    //         $this->addError('time', 'This doctor already has an appointment within 30 minutes of the selected time.');
-    //         return;
-    //     }
+//     SendSmsReminderJob::dispatch(
+//         $appointment->phone_number,
+//         $appointment->patient_name,
+//         $appointmentDateTime->format('Y-m-d H:i:s')
+//     )->delay($reminderTime);
+//     $this->resetForm();
+//     $this->closeModal();
+// }
 
-    //     // Save or update
-    //     if ($this->isEditing) {
-    //         $appointment = AppModel::find($this->appointmentId);
-    //         if ($appointment) {
-    //             $appointment->update([
-    //                 'patient_name' => $this->patientName,
-    //                 'phone_number' => $this->phone_number,
-    //                 'appointment_date' => $this->date,
-    //                 'appointment_time' => $this->time,
-    //                 'doctor_id' => $this->doctorId,
-    //             ]);
-    //         }
-    //     } else {
-    //         AppModel::create([
-    //             'patient_name' => $this->patientName,
-    //             'phone_number' => $this->phone_number,
-    //             'appointment_date' => $this->date,
-    //             'appointment_time' => $this->time,
-    //             'doctor_id' => $this->doctorId,
-    //         ]);
-    //     }
-
-    //     $time = Carbon::parse($appointment->time_schedule)->format('H:i:s');
-    //     $date = Carbon::parse($appointment->date_schedule);
-    //     $mergedDateTime = $date->setTimeFromTimeString($time);
-
-
-    //     if ($appointment->phone_number) {
-    //         \App\Jobs\SendSmsReminderJob::dispatch(
-    //             $appointment->phone_number,
-    //             $appointment->patient_name,
-    //             $mergedDateTime->format('Y-m-d H:i:s')
-    //         );
-    //     }
-
-    //     $this->resetForm();
-    //     $this->closeModal();
-    // }
-
-    public function save()
+public function save()
 {
     $this->validate([
         'patientName' => 'required',
@@ -147,13 +122,33 @@ class Appointment extends Component
     $appointmentDateTime = Carbon::parse($this->date . ' ' . $this->time);
     $now = Carbon::now();
 
-    // Prevent booking in the past
+
     if ($appointmentDateTime->lessThan($now)) {
         $this->addError('time', 'Cannot book an appointment in the past.');
         return;
     }
 
-    // Save or update
+
+    $conflict = AppModel::where('appointment_date', $this->date)
+        ->where('doctor_id', $this->doctorId)
+        ->where(function ($query) use ($appointmentDateTime) {
+            $query->whereBetween('appointment_time', [
+                $appointmentDateTime->copy()->subMinutes(30)->format('H:i:s'),
+                $appointmentDateTime->copy()->addMinutes(30)->format('H:i:s'),
+            ]);
+        });
+
+
+    if ($this->isEditing) {
+        $conflict->where('id', '!=', $this->appointmentId);
+    }
+
+    if ($conflict->exists()) {
+        $this->addError('time', 'This doctor already has an appointment within 30 minutes of the selected time.');
+        return;
+    }
+
+
     if ($this->isEditing) {
         $appointment = AppModel::find($this->appointmentId);
         if ($appointment) {
@@ -175,6 +170,7 @@ class Appointment extends Component
         ]);
     }
 
+
     $appointmentDateTime = Carbon::parse($appointment->appointment_date . ' ' . $appointment->appointment_time);
     $reminderTime = $appointmentDateTime->copy()->subDay();
 
@@ -183,6 +179,7 @@ class Appointment extends Component
         $appointment->patient_name,
         $appointmentDateTime->format('Y-m-d H:i:s')
     )->delay($reminderTime);
+
     $this->resetForm();
     $this->closeModal();
 }

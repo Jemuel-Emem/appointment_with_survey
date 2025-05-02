@@ -32,6 +32,8 @@
                     <td class="border px-4 py-2 text-center">{{ $newborn->weight }}</td>
                     <td class="border px-4 py-2 text-center">{{ $newborn->length }}</td>
                     <td class="border px-4 py-2 text-center">
+                        <button wire:click="showDetails({{ $newborn->id }})" class="px-3 py-1 bg-gray-500 text-white rounded">Show Details</button>
+
                         <button wire:click="editNewborn({{ $newborn->id }})" class="px-3 py-1 bg-yellow-500 text-white rounded">Edit</button>
 
                         <button wire:click="openTracker({{ $newborn->id }})" class="px-3 py-1 bg-blue-500 text-white rounded">Tracker</button>
@@ -257,5 +259,35 @@
         </div>
     </div>
     @endif
+
+
+    @if($showDetailsModal)
+<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white p-6 rounded shadow-lg w-1/2">
+        <h2 class="text-lg font-bold mb-4">Newborn Details</h2>
+
+        @if($selectedNewborn)
+            <div class="grid grid-cols-2 gap-4">
+                <div><strong>Date of Delivery:</strong> {{ $selectedNewborn->date_of_delivery }}</div>
+                <div><strong>Time of Delivery:</strong> {{ $selectedNewborn->time_of_delivery }}</div>
+                <div><strong>Name of Mother:</strong> {{ $selectedNewborn->name_of_mother }}</div>
+                <div><strong>Age:</strong> {{ $selectedNewborn->age }}</div>
+                <div><strong>Sex of Baby:</strong> {{ $selectedNewborn->sex_of_baby }}</div>
+                <div><strong>Name of Child:</strong> {{ $selectedNewborn->name_of_child }}</div>
+                <div><strong>Length:</strong> {{ $selectedNewborn->length }} cm</div>
+                <div><strong>Weight:</strong> {{ $selectedNewborn->weight }} kg</div>
+                <div><strong>Date and Vaccine Given:</strong> {{ $selectedNewborn->date_and_vaccine_given }}</div>
+                <div><strong>Place of Delivery:</strong> {{ $selectedNewborn->place_of_delivery }}</div>
+                <div><strong>Type of Delivery:</strong> {{ $selectedNewborn->type_of_delivery }}</div>
+                <div><strong>Remarks:</strong> {{ $selectedNewborn->remarks1 }}</div>
+            </div>
+        @endif
+
+        <div class="mt-4 flex justify-end">
+            <button wire:click="$set('showDetailsModal', false)" class="px-4 py-2 bg-gray-500 text-white rounded">Close</button>
+        </div>
+    </div>
+</div>
+@endif
 
 </div>

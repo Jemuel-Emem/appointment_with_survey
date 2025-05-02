@@ -11,7 +11,8 @@ class Newborn extends Component
     public $isModalOpen = false;
     public $editMode = false;
 
-
+    public $showDetailsModal = false;
+    public $selectedNewborn;
     public  $newbornName, $newbornId;
     public $visits = [];
 
@@ -23,7 +24,11 @@ class Newborn extends Component
         $this->newborns = newBorns::all();
         return view('livewire.midwife.newborn');
     }
-
+    public function showDetails($id)
+    {
+        $this->selectedNewborn = newBorns::find($id);
+        $this->showDetailsModal = true;
+    }
     public function openModal()
     {
         $this->resetFields();

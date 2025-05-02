@@ -13,7 +13,7 @@ class Staffs extends Component
     public $showModal = false;
     public $name, $email, $role, $password, $staffId;
     public $isEditing = false;
-
+    public $age, $address, $phone;
     public function openModal()
     {
         $this->resetForm();
@@ -28,7 +28,7 @@ class Staffs extends Component
 
     public function resetForm()
     {
-        $this->reset(['name', 'email', 'role', 'password', 'staffId']);
+        $this->reset(['name', 'email', 'role', 'password', 'staffId', 'age', 'address', 'phone']);
     }
 
     public function save()
@@ -38,6 +38,9 @@ class Staffs extends Component
             'email' => 'required|email|unique:users,email,' . $this->staffId,
             'role' => 'required|in:doctor,midwife',
             'password' => $this->isEditing ? 'nullable|min:6' : 'required|min:6',
+            'age' => 'nullable|integer|min:0',
+            'address' => 'nullable|string',
+            'phone' => 'nullable|string',
         ]);
 
         $is_admin = $this->role === 'doctor' ? 2 : 0;
@@ -49,6 +52,9 @@ class Staffs extends Component
                     'name' => $this->name,
                     'email' => $this->email,
                     'is_admin' => $is_admin,
+                    'age' => $this->age,
+                    'address' => $this->address,
+                    'phone' => $this->phone,
                     'password' => $this->password ? Hash::make($this->password) : $staff->password,
                 ]);
             }
@@ -57,9 +63,13 @@ class Staffs extends Component
                 'name' => $this->name,
                 'email' => $this->email,
                 'is_admin' => $is_admin,
+                'age' => $this->age,
+                'address' => $this->address,
+                'phone' => $this->phone,
                 'password' => Hash::make($this->password),
             ]);
         }
+
         flash()->success('Staff saved successfully!');
         $this->resetForm();
         $this->closeModal();
@@ -71,6 +81,10 @@ class Staffs extends Component
         $this->staffId = $staff->id;
         $this->name = $staff->name;
         $this->email = $staff->email;
+        $this->age = $staff->age;
+$this->address = $staff->address;
+$this->phone = $staff->phone;
+
         $this->role = $staff->is_admin == 2 ? 'doctor' : 'midwife';
         $this->isEditing = true;
         $this->showModal = true;

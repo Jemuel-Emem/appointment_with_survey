@@ -9,7 +9,8 @@ class AddPregnant extends Component
 {
     public $selectedPregnantId;
 public $trackerRecords = [];
-
+public $detailRecord; // To store the details
+public $showDetailsModal = false;
     public $showModal = false;
     public $modalType = ''; // 'pregnant' or 'tracker'
 
@@ -26,16 +27,23 @@ public $trackerRecords = [];
 
         if ($type === 'tracker' && $pregnantId) {
             $this->selectedPregnantId = $pregnantId;
-            $this->pregnant_id = $pregnantId; 
+            $this->pregnant_id = $pregnantId;
             $this->trackerRecords = PregnantTracker::where('pregnant_id', $pregnantId)->get();
         }
     }
-
-
+    public function showDetails($id)
+    {
+        $this->detailRecord = Pregnant::findOrFail($id);
+        $this->showDetailsModal = true;
+    }
     public function closeModal()
     {
         $this->showModal = false;
+        $this->showDetailsModal = false;
     }
+
+
+
 
     public function save()
     {

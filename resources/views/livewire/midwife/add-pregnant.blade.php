@@ -25,12 +25,17 @@
                             <td class="border px-4 py-2 text-center">{{ $record->age }}</td>
                             <td class="border px-4 py-2 text-center">{{ $record->purok }}</td>
                             <td class="border px-4 py-2 text-center">
+                                <button wire:click="showDetails({{ $record->id }})"
+                                    class="px-2 py-1 bg-gray-500 text-white rounded">
+                                    Show Details
+                                </button>
+
                                 <button wire:click="edit({{ $record->id }}, 'pregnant')"
                                     class="px-2 py-1 bg-yellow-500 text-white rounded">Edit</button>
 
 
                                 <button wire:click="openModal('tracker', {{ $record->id }})"
-                                    class="px-2 py-1 bg-gray-500 text-white rounded">Tracker
+                                    class="px-2 py-1 bg-blue-500 text-white rounded">Tracker
                             </button>
 
                             <button
@@ -216,4 +221,36 @@
             </div>
         </div>
     @endif
+
+    @if($showDetailsModal)
+    <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <h2 class="text-2xl font-bold mb-4 text-gray-600">Pregnant Record Details</h2>
+
+            @if($detailRecord)
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div><strong>Date Tracked:</strong> {{ $detailRecord->date_tracked }}</div>
+                    <div><strong>Complete Name:</strong> {{ $detailRecord->name }}</div>
+                    <div><strong>Due Date (DOB):</strong> {{ $detailRecord->dob }}</div>
+                    <div><strong>Age:</strong> {{ $detailRecord->age }}</div>
+                    <div><strong>GP:</strong> {{ $detailRecord->gp }}</div>
+                    <div><strong>Height:</strong> {{ $detailRecord->height }} cm</div>
+                    <div><strong>Weight:</strong> {{ $detailRecord->weight }} kg</div>
+                    <div><strong>BMI:</strong> {{ $detailRecord->bmi }}</div>
+                    <div><strong>Pregnant Months:</strong> {{ $detailRecord->pregnant_months }}</div>
+                    <div><strong>Purok:</strong> {{ $detailRecord->purok }}</div>
+                    <div><strong>Husband/Partner:</strong> {{ $detailRecord->husband_partner }}</div>
+                    <div><strong>MUAC:</strong> {{ $detailRecord->muac }}</div>
+                    <div><strong>TT Status:</strong> {{ $detailRecord->tt_status }}</div>
+                    <div class="col-span-2"><strong>Remarks:</strong> {{ $detailRecord->remarks }}</div>
+                </div>
+            @endif
+
+            <div class="mt-4 flex justify-end">
+                <button wire:click="closeModal" class="bg-gray-400 text-white px-4 py-2 rounded">Close</button>
+            </div>
+        </div>
+    </div>
+@endif
+
 </div>
