@@ -93,6 +93,11 @@ Route::prefix('doctor')->middleware(['auth', doctor::class])->group(function () 
         return view('doctor.medical_record');
     })->name('doctor.medical_record');
 
+    Route::get('/docttor.appointment_schedule', function () {
+        return view('doctor.appointment_schedule');
+    })->name('doctor.appointment_schedule');
+
+
 
     // Route::post('/logout', function () {
     //     Auth::logout();

@@ -13,47 +13,32 @@ class Index extends Component
 
     public function mount()
     {
-        // Regular appointments
-        $this->appointments = Appointment::select('id', 'appointment_date', 'appointment_time')
+        $appointmentsData = Appointment::select('appointment_date', 'appointment_time')
             ->get()
-            ->map(function ($appointment) {
-                $date = is_string($appointment->appointment_date)
-                    ? \Carbon\Carbon::parse($appointment->appointment_date)
-                    : $appointment->appointment_date;
+            ->groupBy('appointment_date');
 
-                return [
-                    'id' => $appointment->id,
+        $this->appointments = [];
+
+        foreach ($appointmentsData as $date => $appointments) {
+            foreach ($appointments as $appointment) {
+                $this->appointments[] = [
                     'title' => 'Appointment',
-                    'start' => $date->format('Y-m-d'),
+                    'start' => \Carbon\Carbon::parse($date)->format('Y-m-d'),
                     'time' => $appointment->appointment_time,
                     'color' => 'blue',
-                    'type' => 'regular'
+                    'type' => 'regular',
+                    'count' => count($appointments) // count per day
                 ];
-            })->toArray();
-
-        // Follow-up appointments
-        $this->followups = FollowupAppointment::with('appointment')
-            ->get()
-            ->map(function ($followup) {
-                $date = is_string($followup->followup_date)
-                    ? \Carbon\Carbon::parse($followup->followup_date)
-                    : $followup->followup_date;
-
-                return [
-                    'id' => $followup->id,
-                    'title' => 'Follow-up',
-                    'start' => $date->format('Y-m-d'),
-                    'time' => $followup->appointment->appointment_time ?? '', // Use original appointment time
-                    'color' => 'darkgreen',
-                    'type' => 'followup'
-                ];
-            })->toArray();
+            }
+        }
     }
+
 
     public function render()
     {
         return view('livewire.doctor.index', [
-            'allEvents' => array_merge($this->appointments, $this->followups)
+            'allEvents' => $this->appointments
         ]);
     }
+
 }

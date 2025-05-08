@@ -13,6 +13,8 @@ class Appointment extends Model
         'appointment_date',
         'appointment_time',
         'doctor_id',
+        'category_type',
+        'medical_record_id'
 
     ];
 

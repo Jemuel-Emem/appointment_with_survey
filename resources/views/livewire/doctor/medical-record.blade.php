@@ -185,6 +185,17 @@
                         <label>Prescriptions</label>
                         <textarea wire:model="prescriptions" class="w-full border rounded px-2 py-1"></textarea>
                     </div>
+
+                    <div class="col-span-2">
+                        <label>Category</label>
+                        <input type="text" wire:model="category" class="w-full border rounded px-2 py-1" readonly>
+                    </div>
+
+                    <div class="col-span-2 flex items-center space-x-2 mt-4">
+                        <input type="checkbox" wire:model="is_follow_up" id="is_follow_up" class="w-4 h-4">
+                        <label for="is_follow_up">Schedule
+                            for Checkup</label>
+                    </div>
                 </div>
 
                 <div class="flex justify-end mt-6 space-x-2">

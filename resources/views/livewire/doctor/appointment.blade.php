@@ -1,16 +1,19 @@
 <div>
-    <div class="flex justify-end">
+    {{-- <div class="flex justify-end">
         <button wire:click="openModal" class="mb-4 bg-blue-500 text-white px-4 py-2 rounded">Add Appointment</button>
-    </div>
+    </div> --}}
 
     <div class="overflow-x-auto">
         <table class="min-w-full bg-white border">
             <thead>
                 <tr class="bg-gray-200">
                     <th class="px-4 py-2 border">Patient</th>
+                    <th class="px-4 py-2 border">Phone Number</th>
+                    <th class="px-4 py-2 border">Category</th>
                     <th class="px-4 py-2 border">Date</th>
+
                     <th class="px-4 py-2 border">Time</th>
-                    <th class="px-4 py-2 border">Doctor</th>
+
 
                     <th class="px-4 py-2 border">Actions</th>
                 </tr>
@@ -19,11 +22,11 @@
                 @foreach($appointments as $appointment)
                     <tr>
                         <td class="border px-4 py-2 text-center">{{ $appointment->patient_name }}</td>
+                        <td class="border px-4 py-2 text-center">{{ $appointment->phone_number }}</td>
+                        <td class="border px-4 py-2 text-center">{{ $appointment->category_type }}</td>
                         <td class="border px-4 py-2 text-center">{{ $appointment->appointment_date }}</td>
                         <td class="border px-4 py-2 text-center">{{ $appointment->appointment_time }}</td>
-                        <td class="border px-4 py-2 text-center">
-                            {{ $appointment->doctor ? $appointment->doctor->name : 'N/A' }}
-                        </td>
+
 
                         <td class="border px-4 py-2 text-center">
                             <button wire:click="editAppointment({{ $appointment->id }})" class="px-2 py-1 bg-yellow-500 text-white rounded">Edit</button>
@@ -106,7 +109,7 @@
                     <input type="time" wire:model="time" class="w-full border p-2 rounded">
                 </div>
 
-                <div class="mt-2">
+                {{-- <div class="mt-2">
                     <label class="block font-semibold">Doctor:</label>
                     <select wire:model="doctorId" class="w-full border p-2 rounded">
                         <option value="">Select Doctor</option>
@@ -114,7 +117,7 @@
                             <option value="{{ $doctor->id }}">{{ $doctor->name }}</option>
                         @endforeach
                     </select>
-                </div>
+                </div> --}}
 
                 <div class="mt-4 flex gap-2">
                     <button type="button" wire:click="closeModal" class="bg-gray-400 text-white px-4 py-2 rounded">Cancel</button>

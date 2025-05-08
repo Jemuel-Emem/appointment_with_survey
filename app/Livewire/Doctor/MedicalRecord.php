@@ -1,6 +1,7 @@
 <?php
 namespace App\Livewire\Doctor;
 use App\Models\Medical_Records;
+use App\Models\Appointment;
 use App\Models\patients;
 use App\Models\Resident;
 use Livewire\Component;
@@ -15,6 +16,10 @@ public $showViewModal = false;
     public $showModal = false;
     public $medicalRecords;
     public $search = '';
+
+    public $category = '';
+
+    public $is_follow_up = false;
 
     // Patient Information
     public $household_id, $full_name, $date_of_birth, $age, $gender, $civil_status;
@@ -43,6 +48,7 @@ public $showViewModal = false;
         $this->diagnosis = $record->diagnosis;
         $this->symptoms = $record->symptoms;
         $this->prescriptions = $record->prescriptions;
+        $this->category = $record->category;
 
         $this->showModal = true;
     }
@@ -55,49 +61,35 @@ public $showViewModal = false;
     }
     public function fetchPatientData()
     {
+
+
         $this->validate(['household_id' => 'required']);
 
-        // First try to find in Patients table
-        $patient = patients::where('household_id', $this->household_id)->first();
+    // Only check in Patients table
+    $patient = patients::where('household_id', $this->household_id)->first();
+    $category = json_decode($patient->category, true);
+    if ($patient) {
+        $this->fill([
+            'full_name' => $patient->full_name,
+            'date_of_birth' => $patient->date_of_birth,
+            'age' => $patient->age,
+            'gender' => $patient->gender,
+            'civil_status' => $patient->civil_status,
+            'contact_number' => $patient->contact_number,
+            'email' => $patient->email,
+            'home_address' => $patient->home_address,
+            'purok_zone' => $patient->purok_zone,
+            'years_of_residency' => $patient->years_of_residency,
 
-        if (!$patient) {
-            // If not found in Patients, try Residents table
-            $resident = Resident::where('household_id', $this->household_id)->first();
 
-            if ($resident) {
-                $this->fill([
-                    'full_name' => $resident->full_name,
-                    'date_of_birth' => $resident->date_of_birth,
-                    'age' => $resident->age,
-                    'gender' => $resident->gender,
-                    'civil_status' => $resident->civil_status,
-                    'contact_number' => $resident->contact_number,
-                    'email' => $resident->email,
-                    'home_address' => $resident->home_address,
-                    'purok_zone' => $resident->purok_zone,
-                    'years_of_residency' => $resident->years_of_residency,
-                ]);
+        ]);
 
-                $this->showModal = true;
-            } else {
-                session()->flash('error', 'No patient or resident found with that Household ID.');
-            }
-        } else {
-            $this->fill([
-                'full_name' => $patient->full_name,
-                'date_of_birth' => $patient->date_of_birth,
-                'age' => $patient->age,
-                'gender' => $patient->gender,
-                'civil_status' => $patient->civil_status,
-                'contact_number' => $patient->contact_number,
-                'email' => $patient->email,
-                'home_address' => $patient->home_address,
-                'purok_zone' => $patient->purok_zone,
-                'years_of_residency' => $patient->years_of_residency,
-            ]);
+        $this->category = is_array($category) ? implode(', ', $category) : $category;
 
-            $this->showModal = true;
-        }
+        $this->showModal = true;
+    } else {
+        session()->flash('error', 'No patient found with that Household ID.');
+    }
     }
     public function resetForm()
     {
@@ -105,7 +97,7 @@ public $showViewModal = false;
             'household_id', 'full_name', 'date_of_birth', 'age', 'gender', 'civil_status',
             'contact_number', 'email', 'home_address', 'purok_zone', 'years_of_residency',
             'diagnosis', 'symptoms', 'prescriptions',
-            'showModal', 'editMode', 'editingId'
+            'showModal', 'editMode', 'editingId', 'category'
         ]);
     }
 
@@ -118,6 +110,8 @@ public function loadRecords()
 {
     $this->medicalRecords = Medical_Records::latest()->get();
 }
+
+
     // public function save()
     // {
     //     $this->validate([
@@ -126,80 +120,116 @@ public function loadRecords()
     //         'prescriptions' => 'required|string',
     //     ]);
 
-    //     Medical_Records::create([
-    //         'household_id' => $this->household_id,
-    //         'full_name' => $this->full_name,
-    //         'date_of_birth' => $this->date_of_birth,
-    //         'age' => $this->age,
-    //         'gender' => $this->gender,
-    //         'civil_status' => $this->civil_status,
-    //         'contact_number' => $this->contact_number,
-    //         'email' => $this->email,
-    //         'home_address' => $this->home_address,
-    //         'purok_zone' => $this->purok_zone,
-    //         'years_of_residency' => $this->years_of_residency,
-    //         'diagnosis' => $this->diagnosis,
-    //         'symptoms' => $this->symptoms,
-    //         'prescriptions' => $this->prescriptions,
-    //     ]);
+    //     if ($this->record_id) {
 
-    //     session()->flash('message', 'Medical record saved successfully!');
+    //         $record = Medical_Records::findOrFail($this->record_id);
+    //         $record->update([
+    //             'diagnosis' => $this->diagnosis,
+    //             'symptoms' => $this->symptoms,
+    //             'prescriptions' => $this->prescriptions,
+    //         ]);
+
+    //         session()->flash('message', 'Medical record updated successfully!');
+    //     } else {
+
+    //         Medical_Records::create([
+    //             'household_id' => $this->household_id,
+    //             'full_name' => $this->full_name,
+    //             'date_of_birth' => $this->date_of_birth,
+    //             'age' => $this->age,
+    //             'gender' => $this->gender,
+    //             'civil_status' => $this->civil_status,
+    //             'contact_number' => $this->contact_number,
+    //             'email' => $this->email,
+    //             'home_address' => $this->home_address,
+    //             'purok_zone' => $this->purok_zone,
+    //             'years_of_residency' => $this->years_of_residency,
+    //             'diagnosis' => $this->diagnosis,
+    //             'symptoms' => $this->symptoms,
+    //             'prescriptions' => $this->prescriptions,
+
+    //             'category' => $this->category,
+    //         ]);
+
+    //         session()->flash('message', 'Medical record saved successfully!');
+    //     }
 
     //     $this->reset([
     //         'household_id', 'full_name', 'date_of_birth', 'age', 'gender', 'civil_status',
     //         'contact_number', 'email', 'home_address', 'purok_zone', 'years_of_residency',
-    //         'diagnosis', 'symptoms', 'prescriptions', 'showModal'
+    //         'diagnosis', 'symptoms', 'prescriptions', 'showModal', 'record_id', 'category'
     //     ]);
+
+    //     $this->loadRecords();
     // }
 
     public function save()
-    {
-        $this->validate([
-            'diagnosis' => 'required|string',
-            'symptoms' => 'required|string',
-            'prescriptions' => 'required|string',
+{
+    $this->validate([
+        'diagnosis' => 'required|string',
+        'symptoms' => 'required|string',
+        'prescriptions' => 'required|string',
+    ]);
+
+    $appointmentTimeMap = [
+        'Newborn' => '07:00:00',
+        'Pregnant' => '08:30:00',
+        'Senior' => '10:30:00',
+        'PWD' => '13:00:00',
+        'Others' => '15:00:00',
+    ];
+
+    if ($this->record_id) {
+        $record = Medical_Records::findOrFail($this->record_id);
+        $record->update([
+            'diagnosis' => $this->diagnosis,
+            'symptoms' => $this->symptoms,
+            'prescriptions' => $this->prescriptions,
         ]);
 
-        if ($this->record_id) {
+        session()->flash('message', 'Medical record updated successfully!');
+    } else {
+        $record = Medical_Records::create([
+            'household_id' => $this->household_id,
+            'full_name' => $this->full_name,
+            'date_of_birth' => $this->date_of_birth,
+            'age' => $this->age,
+            'gender' => $this->gender,
+            'civil_status' => $this->civil_status,
+            'contact_number' => $this->contact_number,
+            'email' => $this->email,
+            'home_address' => $this->home_address,
+            'purok_zone' => $this->purok_zone,
+            'years_of_residency' => $this->years_of_residency,
+            'diagnosis' => $this->diagnosis,
+            'symptoms' => $this->symptoms,
+            'prescriptions' => $this->prescriptions,
+            'category' => $this->category,
+        ]);
 
-            $record = Medical_Records::findOrFail($this->record_id);
-            $record->update([
-                'diagnosis' => $this->diagnosis,
-                'symptoms' => $this->symptoms,
-                'prescriptions' => $this->prescriptions,
+
+        if ($this->is_follow_up) {
+            Appointment::create([
+                'patient_name' => $this->full_name,
+                'phone_number' => $this->contact_number,
+                'appointment_date' => null,
+                'appointment_time' => $appointmentTimeMap[$this->category] ?? '15:00:00',
+                'category_type' => $this->category,
+                'medical_record_id' => $record->id,
             ]);
-
-            session()->flash('message', 'Medical record updated successfully!');
-        } else {
-
-            Medical_Records::create([
-                'household_id' => $this->household_id,
-                'full_name' => $this->full_name,
-                'date_of_birth' => $this->date_of_birth,
-                'age' => $this->age,
-                'gender' => $this->gender,
-                'civil_status' => $this->civil_status,
-                'contact_number' => $this->contact_number,
-                'email' => $this->email,
-                'home_address' => $this->home_address,
-                'purok_zone' => $this->purok_zone,
-                'years_of_residency' => $this->years_of_residency,
-                'diagnosis' => $this->diagnosis,
-                'symptoms' => $this->symptoms,
-                'prescriptions' => $this->prescriptions,
-            ]);
-
-            session()->flash('message', 'Medical record saved successfully!');
         }
 
-        $this->reset([
-            'household_id', 'full_name', 'date_of_birth', 'age', 'gender', 'civil_status',
-            'contact_number', 'email', 'home_address', 'purok_zone', 'years_of_residency',
-            'diagnosis', 'symptoms', 'prescriptions', 'showModal', 'record_id'
-        ]);
-
-        $this->loadRecords();
+        session()->flash('message', 'Medical record saved successfully!');
     }
+
+    $this->reset([
+        'household_id', 'full_name', 'date_of_birth', 'age', 'gender', 'civil_status',
+        'contact_number', 'email', 'home_address', 'purok_zone', 'years_of_residency',
+        'diagnosis', 'symptoms', 'prescriptions', 'showModal', 'record_id', 'category', 'is_follow_up'
+    ]);
+
+    $this->loadRecords();
+}
 
     public function sar(){
 

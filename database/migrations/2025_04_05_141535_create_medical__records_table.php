@@ -31,6 +31,7 @@ return new class extends Migration
             $table->text('diagnosis')->nullable();
             $table->text('symptoms')->nullable();
             $table->text('prescriptions')->nullable();
+            $table->string('category')->nullable();
             $table->timestamps();
         });
     }

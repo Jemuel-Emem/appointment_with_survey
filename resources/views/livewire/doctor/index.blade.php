@@ -110,7 +110,6 @@
                     generateCalendar(allEvents, currentMonth, currentYear);
                 });
             </script>
-
         </div>
     </div>
 

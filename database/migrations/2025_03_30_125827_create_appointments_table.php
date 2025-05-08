@@ -15,14 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('patient_name');
             $table->string('phone_number');
-            $table->date('appointment_date');
-            $table->time('appointment_time');
-            $table->unsignedBigInteger('doctor_id');
-
+            $table->date('appointment_date')->nullable();
+            $table->time('appointment_time')->nullable();
+            $table->string('category_type'); // e.g., consultation, check-up, etc.
+            $table->unsignedBigInteger('medical_record_id'); // foreign key to medical_records
             $table->timestamps();
-
-
-            $table->foreign('doctor_id')->references('id')->on('users')->onDelete('cascade');
 
         });
     }

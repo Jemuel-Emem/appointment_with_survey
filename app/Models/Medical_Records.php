@@ -22,5 +22,6 @@ class Medical_Records extends Model
         'diagnosis',
         'symptoms',
         'prescriptions',
+        'category'
     ];
 }
