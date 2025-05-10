@@ -60,7 +60,7 @@
         <div class="mt-2 text-green-600">{{ session('message') }}</div>
     @endif
 
-    <!-- Modal -->
+    {{-- <!-- Modal -->
     @if ($showModal)
         <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div class="bg-white p-6 rounded w-full max-w-md shadow-lg">
@@ -88,7 +88,59 @@
                 </div>
             </div>
         </div>
-    @endif
+    @endif --}}
+
+    @if ($showModal)
+    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white p-6 rounded w-full max-w-md shadow-lg">
+            <h2 class="text-lg font-bold mb-4">Add Available Date</h2>
+
+            <!-- Doctor selection -->
+            <label class="block mb-2 font-medium">Select Doctor</label>
+            <select wire:model="doctor_id" class="w-full border rounded px-2 py-1 mb-4">
+                <option value="">-- Select Doctor --</option>
+                @foreach($doctors as $doctor)
+                    <option value="{{ $doctor->id }}">{{ $doctor->name }}</option>
+                @endforeach
+            </select>
+            @error('doctor_id') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+
+            <!-- Date input -->
+            <label class="block mb-2 font-medium">Available Date</label>
+            <input type="date" wire:model="available_date" class="w-full border rounded px-2 py-1 mb-4">
+            @error('available_date') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+
+            <!-- Time slots for each category -->
+            @php
+                $categories = ['Newborn', 'Pregnant', 'Senior Citizen', 'PWD', 'Others'];
+                $timeOptions = [
+                    '7:00–8:00AM',
+                    '8:30–10:30AM',
+                    '10:30–11:30AM',
+                    '1:00–2:00PM',
+                    '3:00–4:00PM'
+                ];
+            @endphp
+
+            @foreach ($categories as $category)
+                <label class="block mb-2 font-medium">{{ $category }} Time Slot</label>
+                <select wire:model="timeSlots.{{ $category }}" class="w-full border rounded px-2 py-1 mb-4">
+                    <option value="">-- Select Time --</option>
+                    @foreach ($timeOptions as $option)
+                        <option value="{{ $option }}">{{ $option }}</option>
+                    @endforeach
+                </select>
+            @endforeach
+
+            <!-- Action Buttons -->
+            <div class="flex justify-end space-x-2">
+                <button wire:click="saveAvailability" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Save</button>
+                <button wire:click="$set('showModal', false)" class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500">Cancel</button>
+            </div>
+        </div>
+    </div>
+@endif
+
 
     <!-- Schedule Table -->
     <div class="mt-6">
