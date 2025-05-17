@@ -23,5 +23,6 @@ class pregnants extends Model
         'muac',
         'tt_status',
         'remarks',
+        'phone_number'
     ];
 }

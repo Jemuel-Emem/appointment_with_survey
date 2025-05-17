@@ -10,9 +10,12 @@ class Midwife_Appointment extends Model
         'patient_name',
         'appointment_date',
         'appointment_time',
+        'category_type',
+        'phone_number'
 
 
     ];
+
 
     public function followups()
     {

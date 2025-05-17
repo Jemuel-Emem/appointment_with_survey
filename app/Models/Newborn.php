@@ -21,5 +21,6 @@ class Newborn extends Model
         'place_of_delivery',
         'type_of_delivery',
         'remarks',
+            'phone_number'
     ];
 }

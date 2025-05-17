@@ -1,13 +1,14 @@
 <div>
-    <div class="flex justify-end">
+    {{-- <div class="flex justify-end">
         <button wire:click="openModal" class="mb-4 bg-blue-500 text-white px-4 py-2 rounded">Add Appointment</button>
-    </div>
+    </div> --}}
 
     <div class="overflow-x-auto">
         <table class="min-w-full bg-white border">
             <thead>
                 <tr class="bg-gray-200">
-                    <th class="px-4 py-2 border">Pregnant Name</th>
+                    <th class="px-4 py-2 border">Patient Name</th>
+                       <th class="px-4 py-2 border">Category </th>
                     <th class="px-4 py-2 border">Date</th>
                     <th class="px-4 py-2 border">Time</th>
 
@@ -19,6 +20,7 @@
                 @foreach($appointments as $appointment)
                     <tr>
                         <td class="border px-4 py-2 text-center">{{ $appointment->patient_name }}</td>
+                          <td class="border px-4 py-2 text-center">{{ $appointment->category_type }}</td>
                         <td class="border px-4 py-2 text-center">{{ $appointment->appointment_date }}</td>
                         <td class="border px-4 py-2 text-center">{{ $appointment->appointment_time }}</td>
 

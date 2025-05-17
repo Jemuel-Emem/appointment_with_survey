@@ -127,6 +127,12 @@ Route::prefix('midwife')->middleware(['auth', midwife::class])->group(function (
     Route::get('/midwife.appointment', function () {
         return view('midwife.appointment');
     })->name('midwife.appointment');
+
+ Route::get('/midwife.midwife_appointment_schedule', function () {
+        return view('midwife.midwife_appointment_schedule');
+    })->name('midwife.midwife_appointment_schedule');
+
+
     // Route::post('/logout', function () {
     //     Auth::logout();
     //     return redirect('/login');

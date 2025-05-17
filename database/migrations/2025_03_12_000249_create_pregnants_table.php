@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('muac')->nullable();
             $table->string('tt_status')->nullable();
             $table->text('remarks')->nullable();
+            $table->string('phone_number');
             $table->timestamps();
         });
     }

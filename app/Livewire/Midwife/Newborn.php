@@ -2,11 +2,13 @@
 
 namespace App\Livewire\Midwife;
 use App\Models\Newborn_Tracker_Visit as NewbornTrackerVisit;
+use App\Models\Midwife_Appointment;
 use App\Models\Newborn as newBorns;
 use Livewire\Component;
 
 class Newborn extends Component
 {
+    public $is_follow_up = false;
     public $newborns, $newborn_id, $date_of_delivery, $time_of_delivery, $name_of_mother, $age, $sex_of_baby, $name_of_child, $length, $weight, $date_and_vaccine_given, $place_of_delivery, $type_of_delivery, $remarks;
     public $isModalOpen = false;
     public $editMode = false;
@@ -18,7 +20,7 @@ class Newborn extends Component
 
     public $isTrackerOpen = false;
 
-    public $visit_date, $age_today, $height, $reason_of_visit, $vaccine_or_service_provided, $dose, $schedule_next_visit,$remarks1;
+    public $visit_date, $age_today, $height, $reason_of_visit, $vaccine_or_service_provided, $dose, $schedule_next_visit,$remarks1, $phone_number;
     public function render()
     {
         $this->newborns = newBorns::all();
@@ -56,6 +58,7 @@ class Newborn extends Component
         $this->place_of_delivery = '';
         $this->type_of_delivery = '';
         $this->remarks = '';
+         $this->phone_number = '';
     }
 
 
@@ -129,7 +132,17 @@ class Newborn extends Component
             'place_of_delivery' => $this->place_of_delivery,
             'type_of_delivery' => $this->type_of_delivery,
             'remarks' => $this->remarks1,
+             'phone_number' => $this->phone_number,
         ]);
+
+         if ($this->is_follow_up) {
+        Midwife_Appointment::create([
+            'patient_name' => $this->name_of_child,
+            'phone_number' => $this->phone_number,
+            'category_type' => 'Newborn',
+             'appointment_time'=> '07:00:00'
+        ]);
+    }
 
         session()->flash('message', 'Newborn record added successfully!');
         $this->closeModal();
@@ -174,7 +187,19 @@ class Newborn extends Component
             'place_of_delivery' => $this->place_of_delivery,
             'type_of_delivery' => $this->type_of_delivery,
             'remarks' => $this->remarks,
+             'phone_number' => $this->phone_number,
+
         ]);
+
+
+         if ($this->is_follow_up) {
+        Midwife_Appointment::create([
+            'patient_name' => $this->name_of_child,
+            'phone_number' => $this->phone_number,
+            'category_type' => 'Newborn',
+            'appointment_time'=> '07:00:00'
+        ]);
+    }
 
         session()->flash('message', 'Newborn record updated successfully!');
         $this->closeModal();

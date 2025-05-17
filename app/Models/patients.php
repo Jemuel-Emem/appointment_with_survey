@@ -41,8 +41,6 @@ class patients extends Model
 
         'category',
 
-
-        // Medical Treatment
         'under_medical_treatment',
         'treatment_details',
         'months_pregnant_newborn'

@@ -117,6 +117,17 @@
                                 <label class="block font-semibold">TT Status:</label>
                                 <input type="text" wire:model="tt_status" class="w-full border p-2 rounded">
                             </div>
+
+                               <div>
+                                        <label class="block font-semibold">Phone Number:</label>
+                                        <input type="text" wire:model="phone_number" class="w-full border p-2 rounded">
+                        </div>
+
+       <!-- In the pregnant form section -->
+<div class="col-span-2 flex items-center space-x-2 mt-4">
+    <input type="checkbox" wire:model="is_follow_up" id="is_follow_up" class="w-4 h-4">
+    <label for="is_follow_up">Schedule for Checkup</label>
+</div>
                         @else
                             <div>
                                 <label class="block font-semibold">Date of Visit:</label>
@@ -163,6 +174,7 @@
                                 <label class="block font-semibold">Remarks:</label>
                                 <textarea wire:model="remarks1" class="form-input w-full border p-2 rounded"></textarea>
                             </div>
+
 
                             <div class="col-span-2">
                                 <h3 class="font-semibold text-lg mb-2">Tracker History</h3>
@@ -242,6 +254,7 @@
                     <div><strong>Husband/Partner:</strong> {{ $detailRecord->husband_partner }}</div>
                     <div><strong>MUAC:</strong> {{ $detailRecord->muac }}</div>
                     <div><strong>TT Status:</strong> {{ $detailRecord->tt_status }}</div>
+                     <div><strong>Phone Number:</strong> {{ $detailRecord->phone_number }}</div>
                     <div class="col-span-2"><strong>Remarks:</strong> {{ $detailRecord->remarks }}</div>
                 </div>
             @endif

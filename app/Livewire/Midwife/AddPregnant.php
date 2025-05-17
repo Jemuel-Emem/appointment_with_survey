@@ -3,6 +3,7 @@
 namespace App\Livewire\Midwife;
 use App\Models\PregnantTracker;
 use App\Models\Pregnants as Pregnant;
+use App\Models\Midwife_Appointment;
 use Livewire\Component;
 
 class AddPregnant extends Component
@@ -13,13 +14,14 @@ public $detailRecord; // To store the details
 public $showDetailsModal = false;
     public $showModal = false;
     public $modalType = ''; // 'pregnant' or 'tracker'
-
+  public $phone_number = '';
     // Pregnant Fields
     public $pregnant_id, $date_tracked, $name, $dob, $age, $gp, $height, $weight, $bmi, $pregnant_months, $purok, $husband_partner, $muac, $tt_status, $remarks;
 
     // Pregnant Tracker Fields
     public $tracker_id, $date_of_visit, $family_number, $months_upon_visit, $purok1, $vaccine_received, $weight1, $height1, $bp, $remarks1, $next_schedule_visit;
 
+public $is_follow_up = false;
     public function openModal($type, $pregnantId = null)
     {
         $this->modalType = $type;
@@ -57,6 +59,8 @@ public $showDetailsModal = false;
                 'pregnant_months' => 'required|numeric',
             ]);
 
+
+
             Pregnant::updateOrCreate(
                 ['id' => $this->pregnant_id],
                 [
@@ -74,10 +78,22 @@ public $showDetailsModal = false;
         'muac' => $this->muac,
         'tt_status' => $this->tt_status,
         'remarks' => $this->remarks,
+        'phone_number' =>$this->phone_number,
+              'appointment_time'=> '08:30:00'
 
 
                 ]
             );
+
+               if ($this->is_follow_up) {
+            Midwife_Appointment::create([
+                'patient_name' => $this->name,
+                'phone_number' => $this->phone_number,
+                'category_type' => 'Pregnant',
+                'appointment_time'=> '08:30:00'
+            ]);
+        }
+$this->is_follow_up = false;
 
             flash()->success('Pregnant data added successfully!');
         } else {
@@ -137,6 +153,7 @@ public $showDetailsModal = false;
             $this->muac = $pregnant->muac;
             $this->tt_status = $pregnant->tt_status;
             $this->remarks = $pregnant->remarks;
+                 $this->phone_number = $pregnant->phone_number;
         } else {
             $tracker = PregnantTracker::findOrFail($id);
             $this->tracker_id = $tracker->id;

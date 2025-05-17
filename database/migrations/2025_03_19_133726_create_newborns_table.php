@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('place_of_delivery');
             $table->enum('type_of_delivery', ['Normal', 'C-Section', 'Others']);
             $table->text('remarks')->nullable();
+            $table->string('phone_number');
             $table->timestamps();
         });
     }

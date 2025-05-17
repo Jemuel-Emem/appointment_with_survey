@@ -249,6 +249,16 @@
                         <label>Remarks</label>
                         <textarea wire:model="remarks1" class="w-full border p-2"></textarea>
                     </div>
+
+                       <div>
+                                        <label class="block font-semibold">Phone Number:</label>
+                                        <input type="text" wire:model="phone_number" class="w-full border p-2 rounded">
+                        </div>
+
+                  <div class="col-span-2 flex items-center space-x-2 mt-4">
+    <input type="checkbox" wire:model="is_follow_up" id="is_follow_up" class="w-4 h-4">
+    <label for="is_follow_up">Schedule for Checkup</label>
+</div>
                 </div>
 
                 <div class="mt-4">
@@ -279,6 +289,7 @@
                 <div><strong>Date and Vaccine Given:</strong> {{ $selectedNewborn->date_and_vaccine_given }}</div>
                 <div><strong>Place of Delivery:</strong> {{ $selectedNewborn->place_of_delivery }}</div>
                 <div><strong>Type of Delivery:</strong> {{ $selectedNewborn->type_of_delivery }}</div>
+                 <div><strong>Phone Number:</strong> {{ $selectedNewborn->phone_number}}</div>
                 <div><strong>Remarks:</strong> {{ $selectedNewborn->remarks1 }}</div>
             </div>
         @endif

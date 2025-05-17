@@ -13,9 +13,16 @@ return new class extends Migration
     {
         Schema::create('midwife__appointments', function (Blueprint $table) {
             $table->id();
+            // $table->string('patient_name');
+            // $table->date('appointment_date');
+            // $table->time('appointment_time');
+
             $table->string('patient_name');
-            $table->date('appointment_date');
-            $table->time('appointment_time');
+            $table->string('phone_number');
+            $table->date('appointment_date')->nullable();
+            $table->time('appointment_time')->nullable();
+            $table->string('category_type');
+
             $table->timestamps();
         });
     }
